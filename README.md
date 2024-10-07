@@ -81,7 +81,7 @@ pub fn build(b: *std.Build) void {
 ### In your `src/canvas.zig` you should now be able to:
 
 ```zig
-const art = @import("art.zig");
+const art = @import("art");
 
 var canvas: art.Canvas(16, 9) = .{};
 
@@ -89,10 +89,12 @@ export fn start() void {
     art.log("Hello from Zig!");
 }
 
-export fn update(pad: u32) void {}
+export fn update(pad: u32) void {
+    _ = pad; // autofix
+}
 
 export fn draw() void {
-    canvas.clear(.{ 0x7C, 0xAF, 0xF3, 0xFF });
+    canvas.clear(.{ 0x7C, 0xAF, 0x3C, 0xFF });
 }
 
 export fn fps() usize {
