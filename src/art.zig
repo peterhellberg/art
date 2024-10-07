@@ -36,27 +36,11 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         }
 
         pub fn hline(self: *Self, x: usize, y: usize, w: usize, color: RGB) void {
-            var to = x + w;
-
-            if (to >= self.width - 1) {
-                to = self.width;
-            }
-
-            for (x..to) |rx| {
-                self.set(rx, y, color);
-            }
+            self.rect(x, y, .{ .size = .{ w, 1 }, .color = color });
         }
 
         pub fn vline(self: *Self, x: usize, y: usize, h: usize, color: RGB) void {
-            var to = y + h;
-
-            if (to >= self.height - 1) {
-                to = self.height;
-            }
-
-            for (y..to) |ry| {
-                self.set(x, ry, color);
-            }
+            self.rect(x, y, .{ .size = .{ 1, h }, .color = color });
         }
 
         pub fn rect(self: *Self, x: usize, y: usize, args: rectArgs) void {
@@ -68,29 +52,24 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         }
 
         pub fn box(self: *Self, x: usize, y: usize, args: boxArgs) void {
+            const c = args.color;
+            const w = args.size[0];
+            const h = args.size[1];
+
+            const bw = if (args.border[0] > w) w else args.border[0];
+            const bh = if (args.border[1] > h) h else args.border[1];
+
             if (args.fill) {
-                self.rect(x, y, .{
-                    .size = args.size -| Size{ 1, 1 },
+                self.rect(x + bw, y + bh, .{
+                    .size = args.size -| args.border * Size{ 2, 2 },
                     .color = args.fillColor,
                 });
             }
 
-            const color = args.color;
-            const w = args.size[0];
-            const h = args.size[1];
-            const by = y + (h -| 1);
-            const rx = x + (w -| 1);
-
-            if (x > self.width or y > self.height) return;
-
-            self.hline(x, y, w, color);
-
-            if (by > self.height) return;
-
-            self.hline(x, by, w, color);
-            self.vline(x, y + 1, h -| 2, color);
-
-            if (rx < self.width) self.vline(rx, y + 1, h -| 2, color);
+            self.rect(x, y, .{ .size = .{ w, bh }, .color = c });
+            self.rect(x, y + h - bh, .{ .size = .{ w, bh }, .color = c });
+            self.rect(x, y + bh, .{ .size = .{ bw, h - bh }, .color = c });
+            self.rect(x + w - bw, y + bh, .{ .size = .{ bw, h - bh }, .color = c });
         }
     };
 }
@@ -222,6 +201,7 @@ pub const rectArgs = struct {
 
 pub const boxArgs = struct {
     size: Size = .{ 1, 1 },
+    border: Size = .{ 1, 1 },
     color: RGB = .{ 0, 0, 0 },
     fill: bool = false,
     fillColor: RGB = .{ 0, 0, 0 },
