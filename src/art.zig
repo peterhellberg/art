@@ -110,7 +110,7 @@ pub fn rgb(hex: u32) RGB {
 
 pub fn rgba(hexa: u32) RGBA {
     return .{
-        @intCast(hexa >> 32 & 0xFF),
+        @intCast(hexa >> 24 & 0xFF),
         @intCast(hexa >> 16 & 0xFF),
         @intCast(hexa >> 8 & 0xFF),
         @intCast(hexa & 0xFF),
