@@ -90,7 +90,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
             self.hline(x, by, w, color);
             self.vline(x, y + 1, h -| 2, color);
 
-            if (rx < self.height) self.vline(rx, y + 1, h -| 2, color);
+            if (rx < self.width) self.vline(rx, y + 1, h -| 2, color);
         }
     };
 }
