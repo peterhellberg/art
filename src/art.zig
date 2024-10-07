@@ -30,9 +30,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         }
 
         pub fn set(self: *Self, x: usize, y: usize, c: RGB) void {
-            if (x > self.width or y > self.height) {
-                return;
-            }
+            if (x >= self.width or y >= self.height) return;
 
             self.buf[y][x] = .{ c[0], c[1], c[2], 255 };
         }
