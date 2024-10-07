@@ -30,7 +30,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         }
 
         pub fn set(self: *Self, x: usize, y: usize, c: RGB) void {
-            if (x > WIDTH or y > HEIGHT) {
+            if (x > self.width or y > self.height) {
                 return;
             }
 
@@ -40,8 +40,8 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         pub fn hline(self: *Self, x: usize, y: usize, w: usize, color: RGB) void {
             var to = x + w;
 
-            if (to >= WIDTH - 1) {
-                to = WIDTH;
+            if (to >= self.width - 1) {
+                to = self.width;
             }
 
             for (x..to) |rx| {
@@ -52,8 +52,8 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         pub fn vline(self: *Self, x: usize, y: usize, h: usize, color: RGB) void {
             var to = y + h;
 
-            if (to >= HEIGHT - 1) {
-                to = HEIGHT;
+            if (to >= self.height - 1) {
+                to = self.height;
             }
 
             for (y..to) |ry| {
@@ -72,7 +72,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         pub fn box(self: *Self, x: usize, y: usize, args: boxArgs) void {
             if (args.fill) {
                 self.rect(x, y, .{
-                    .size = args.size -| Point{ 1, 1 },
+                    .size = args.size -| Size{ 1, 1 },
                     .color = args.fillColor,
                 });
             }
@@ -83,16 +83,16 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
             const by = y + (h -| 1);
             const rx = x + (w -| 1);
 
-            if (x > WIDTH or y > HEIGHT) return;
+            if (x > self.width or y > self.height) return;
 
             self.hline(x, y, w, color);
 
-            if (by > HEIGHT) return;
+            if (by > self.height) return;
 
             self.hline(x, by, w, color);
             self.vline(x, y + 1, h -| 2, color);
 
-            if (rx < HEIGHT) self.vline(rx, y + 1, h -| 2, color);
+            if (rx < self.height) self.vline(rx, y + 1, h -| 2, color);
         }
     };
 }
@@ -215,14 +215,15 @@ pub fn key(pad: u32, old: u32) Key {
 }
 
 pub const Point = @Vector(2, usize);
+pub const Size = @Vector(2, usize);
 
 pub const rectArgs = struct {
-    size: Point = .{ 1, 1 },
+    size: Size = .{ 1, 1 },
     color: RGB = .{ 255, 255, 255 },
 };
 
 pub const boxArgs = struct {
-    size: Point = .{ 1, 1 },
+    size: Size = .{ 1, 1 },
     color: RGB = .{ 0, 0, 0 },
     fill: bool = false,
     fillColor: RGB = .{ 0, 0, 0 },
