@@ -1,0 +1,9 @@
+.{
+    .name = "art",
+    .version = "0.0.1",
+    .paths = .{
+        "src/art.zig",
+        "build.zig",
+        "build.zig.zon",
+    },
+}
