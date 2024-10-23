@@ -35,6 +35,12 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
             self.buf[y][x] = .{ c[0], c[1], c[2], 255 };
         }
 
+        pub fn seta(self: *Self, x: usize, y: usize, c: RGBA) void {
+            if (x >= self.width or y >= self.height) return;
+
+            self.buf[y][x] = c;
+        }
+
         pub fn hline(self: *Self, x: usize, y: usize, w: usize, color: RGB) void {
             self.rect(x, y, .{ .size = .{ w, 1 }, .color = color });
         }
