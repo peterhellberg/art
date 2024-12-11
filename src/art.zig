@@ -20,36 +20,36 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
             }
         }
 
-        pub fn fill(self: *Self, color: *const fn (x: usize, y: usize) RGBA) void {
+        pub fn fill(self: *Self, color: *const fn (x: i32, y: i32) RGBA) void {
             for (&self.buf, 0..) |*row, y| {
                 for (row, 0..) |*square, x| {
-                    const c = color(x, y);
+                    const c = color(@intCast(x), @intCast(y));
                     if (c[3] > 0) square.* = c;
                 }
             }
         }
 
-        pub fn set(self: *Self, x: usize, y: usize, c: RGB) void {
-            if (x >= self.width or y >= self.height) return;
+        pub fn set(self: *Self, x: i32, y: i32, c: RGB) void {
+            if (x < 0 or x >= self.width or y < 0 or y >= self.height) return;
 
-            self.buf[y][x] = .{ c[0], c[1], c[2], 255 };
+            self.buf[@intCast(y)][@intCast(x)] = .{ c[0], c[1], c[2], 255 };
         }
 
-        pub fn seta(self: *Self, x: usize, y: usize, c: RGBA) void {
-            if (x >= self.width or y >= self.height) return;
+        pub fn seta(self: *Self, x: i32, y: i32, c: RGBA) void {
+            if (x < 0 or x >= self.width or y < 0 or y >= self.height) return;
 
             self.buf[y][x] = c;
         }
 
-        pub fn hline(self: *Self, x: usize, y: usize, w: usize, color: RGB) void {
+        pub fn hline(self: *Self, x: i32, y: i32, w: usize, color: RGB) void {
             self.rect(x, y, .{ .size = .{ w, 1 }, .color = color });
         }
 
-        pub fn vline(self: *Self, x: usize, y: usize, h: usize, color: RGB) void {
+        pub fn vline(self: *Self, x: i32, y: i32, h: usize, color: RGB) void {
             self.rect(x, y, .{ .size = .{ 1, h }, .color = color });
         }
 
-        pub fn rect(self: *Self, x: usize, y: usize, args: rectArgs) void {
+        pub fn rect(self: *Self, x: i32, y: i32, args: rectArgs) void {
             for (x..x + args.size[0]) |rx| {
                 for (y..y + args.size[1]) |ry| {
                     self.set(rx, ry, args.color);
@@ -57,7 +57,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
             }
         }
 
-        pub fn box(self: *Self, x: usize, y: usize, args: boxArgs) void {
+        pub fn box(self: *Self, x: i32, y: i32, args: boxArgs) void {
             const c = args.color;
             const w = args.size[0];
             const h = args.size[1];
@@ -197,7 +197,7 @@ pub fn key(pad: u32, old: u32) Key {
     return Key.new(pad, old);
 }
 
-pub const Point = @Vector(2, usize);
+pub const Point = @Vector(2, i32);
 pub const Size = @Vector(2, usize);
 
 pub const rectArgs = struct {
