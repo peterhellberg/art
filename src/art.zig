@@ -50,9 +50,12 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         }
 
         pub fn rect(self: *Self, x: i32, y: i32, args: rectArgs) void {
-            for (x..x + args.size[0]) |rx| {
-                for (y..y + args.size[1]) |ry| {
-                    self.set(rx, ry, args.color);
+            const ux: usize = @intCast(x);
+            const uy: usize = @intCast(y);
+
+            for (ux..ux + args.size[0]) |rx| {
+                for (uy..uy + args.size[1]) |ry| {
+                    self.set(@intCast(rx), @intCast(ry), args.color);
                 }
             }
         }
