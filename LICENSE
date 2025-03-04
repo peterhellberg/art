@@ -1,5 +1,6 @@
-art is a Zig module used to build WebAssembly binaries rendering to a HTML canvas.
-Copyright (c) 2024 Peter Hellberg
+MIT License
+
+Copyright (c) 2024-2025 Peter Hellberg
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
