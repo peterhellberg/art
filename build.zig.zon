@@ -1,6 +1,7 @@
 .{
-    .name = "art",
-    .version = "0.0.1",
+    .name = .art,
+    .version = "0.0.9",
+    .fingerprint = 0xfc35d65481b3b408,
     .paths = .{
         "src/art.zig",
         "build.zig",
