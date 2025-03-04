@@ -15,12 +15,13 @@ You can have `zig build` retrieve the `art` module if you specify it as a depend
 ### Create a `build.zig.zon` that looks something like this:
 ```zig
 .{
-    .name = "art-canvas",
+    .name = .art_canvas,
     .version = "0.0.0",
+    .fingerprint = 0x0000000000,
     .paths = .{""},
     .dependencies = .{
         .art = .{
-            .url = "https://github.com/peterhellberg/art/archive/refs/tags/v0.0.1.tar.gz",
+            .url = "https://github.com/peterhellberg/art/archive/refs/tags/v0.0.8.tar.gz",
         },
     },
 }
