@@ -38,7 +38,7 @@ pub fn Canvas(comptime WIDTH: usize, comptime HEIGHT: usize) type {
         pub fn seta(self: *Self, x: i32, y: i32, c: RGBA) void {
             if (x < 0 or x >= self.width or y < 0 or y >= self.height) return;
 
-            self.buf[y][x] = c;
+            self.buf[@intCast(y)][@intCast(x)] = c;
         }
 
         pub fn hline(self: *Self, x: i32, y: i32, w: usize, color: RGB) void {
